@@ -1,0 +1,48 @@
+﻿@model Calendar.ViewModels.EventViewModel
+@{
+    ViewData["Title"] = "Day";
+}
+
+<div class="text-center">
+    <h2>@ViewBag.date.ToString("dddd, dd MMMM yyyy")</h2>
+</div>
+
+@if (Model.GetDay(ViewBag.date).Count != 0)
+{
+    <table class="table table-borderless text-center">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+      
+            @foreach (Event e in Model.GetDay(ViewBag.date))
+            {
+            <tr>
+                <td>@e.Date.ToShortTimeString()</td>
+                <td>@e.Description</td>
+                <td>
+                    <a href="/Event/Edit/@e.Id" style="width: 25%;" class="btn btn-secondary badge-pill ">Edit</a>
+                    <a href="/Event/Delete/@e.Id" style="width: 25%;" class="btn btn-danger badge-pill ">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{   
+    <div class="text-center">
+        <h3>There are no events planned on that day.</h3> 
+    </div>
+}
+<br />
+<div class="text-center">
+
+    <a href="/Event/Add/" style="width: 10%;" class="btn btn-primary badge-pill" >Add</a>
+    <a href="/Home/Index/" style="width: 10%;" class="btn btn-dark badge-pill">Close</a>
+
+</div>
