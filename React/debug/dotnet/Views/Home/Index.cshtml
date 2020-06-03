@@ -1,0 +1,55 @@
+﻿@model Calendar.ViewModels.EventViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+    <head>
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.css' rel='stylesheet' />
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.css' rel='stylesheet' />
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/bootstrap/main.min.js' rel='stylesheet' />
+
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.js'></script>
+        <script src="https://unpkg.com/@@fullcalendar/interaction@4.4.0/main.min.js"></script>
+
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    header: {
+                        left: 'prev',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    events: [
+                        @foreach (Event e in Model.GetAll())
+                        {
+                            <text>{
+                                start: '@e.Date.ToString("yyyy'-'MM'-'dd")',
+                                end: '@e.Date.ToString("yyyy'-'MM'-'dd")',
+                                rendering: 'background',
+                                backgroundColor: '#3399ff'
+                            },</text>
+                        }
+                    ],
+                    dateClick: function (dateClickInfo) {
+                        window.location.href = '/Home/Day/?date=' + dateClickInfo.dateStr;
+                    },
+                    plugins: ['dayGrid', 'interaction'],
+                    defaultView: 'dayGridMonth',
+                    defaultDate: '@ViewBag.date',
+                    editable: true,
+                    eventLimit: true
+                });
+
+                calendar.render();
+            });
+
+        </script>
+    </head>
+    <body>
+
+        <div id='calendar'></div>
+
+    </body>
